@@ -6,6 +6,8 @@
   --line: #d7dfda;
   --accent: #40307f;
   --accent-dark: #2c205f;
+  --button-bg: #4b3168;
+  --button-hover: #342047;
   --focus: #a44f20;
   --error: #a02f2f;
   --wood: #397548;
@@ -102,11 +104,11 @@ button {
   cursor: pointer;
 }
 
-.primary-button { margin-top: 8px; color: #fff; background: var(--accent); }
-.primary-button:hover:not(:disabled) { background: var(--accent-dark); }
+.primary-button { margin-top: 8px; color: #fff; background: var(--button-bg); }
+.primary-button:hover:not(:disabled) { background: var(--button-hover); }
 .primary-button:disabled { cursor: not-allowed; opacity: .48; }
-.secondary-button { margin-top: 26px; color: #fff; background: var(--accent-dark); }
-.secondary-button:hover { background: #211747; }
+.secondary-button { margin-top: 26px; color: #fff; background: var(--button-bg); }
+.secondary-button:hover { background: var(--button-hover); }
 
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
