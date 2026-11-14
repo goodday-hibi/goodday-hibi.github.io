@@ -1,75 +1,155 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="生年月日から四柱推命の日干と五行タイプを調べる簡易診断です。">
-  <meta name="robots" content="index, follow">
-  <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
-  <title>日干・五行簡易診断</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="生年月日から四柱推命の入口をやさしく体験できる、ブラウザ完結型の簡易診断サイト。">
+  <title>暦の余白｜四柱推命・簡易命式ノート</title>
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-  <main class="page-shell">
-    <section class="card intro-card" aria-labelledby="page-title">
-      <p class="eyebrow">四柱推命</p>
-      <h1 id="page-title">日干・五行簡易診断</h1>
-      <p class="lead">生年月日を選ぶと、あなたの中心的な性質を表す日干を確認できます。</p>
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="暦の余白 トップへ">
+      <span class="brand-mark" aria-hidden="true">暦</span>
+      <span><b>暦の余白</b><small>KOYOMI NO YOHAKU</small></span>
+    </a>
+    <nav aria-label="ページ内メニュー">
+      <a href="#reading">簡易鑑定</a>
+      <a href="#guide">読み方</a>
+      <a href="#faq">よくある質問</a>
+    </nav>
+  </header>
 
-      <form id="birthdate-form" novalidate>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">FOUR PILLARS · PRIVATE READING</p>
+        <h1>生まれた日の<br><em>小さな設計図</em>をひらく。</h1>
+        <p class="hero-lead">難しい言葉をできるだけ使わず、四柱推命（生年月日時を暦に置き換えて傾向を読む占術）の入口を一枚のノートにまとめる。</p>
+        <a class="text-link" href="#reading">無料で体験する <span aria-hidden="true">↘</span></a>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="seal"><span>陰</span><i></i><span>陽</span></div>
+        <p>木 · 火 · 土 · 金 · 水</p>
+      </div>
+      <p class="vertical-note" aria-hidden="true">心の輪郭を、暦から静かに見つめる。</p>
+    </section>
+
+    <section class="reading-section" id="reading">
+      <div class="section-intro reveal">
+        <p class="section-no">01</p>
+        <div>
+          <p class="eyebrow">YOUR BIRTH DATA</p>
+          <h2>あなたの暦を教えてください</h2>
+          <p>入力した情報は、このブラウザの中だけで計算する。サーバーへの保存や送信はしない。</p>
+        </div>
+      </div>
+
+      <form class="reading-card reveal" id="reading-form" novalidate>
+        <div class="form-heading">
+          <span aria-hidden="true">一</span>
+          <div><small>必須</small><h3>生年月日</h3></div>
+        </div>
+        <div class="date-grid">
+          <label><span>年</span><select id="birth-year" required></select></label>
+          <label><span>月</span><select id="birth-month" required></select></label>
+          <label><span>日</span><select id="birth-day" required></select></label>
+        </div>
+
+        <div class="form-heading optional-heading">
+          <span aria-hidden="true">二</span>
+          <div><small>任意</small><h3>出生時刻</h3></div>
+        </div>
+        <div class="time-grid">
+          <label><span>時</span><select id="birth-hour"><option value="">不明</option></select></label>
+          <label><span>分</span><select id="birth-minute"><option value="">不明</option></select></label>
+        </div>
+        <p class="field-note">時刻が不明でも診断できる。時柱（出生時刻から出す柱）だけを省略する。</p>
+
         <fieldset>
-          <legend>生年月日を選ぶ</legend>
-          <div class="date-fields">
-            <div class="field">
-              <label for="birth-year">年</label>
-              <select id="birth-year" name="birth-year" required>
-                <option value="">年</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="birth-month">月</label>
-              <select id="birth-month" name="birth-month" required>
-                <option value="">月</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="birth-day">日</label>
-              <select id="birth-day" name="birth-day" required>
-                <option value="">日</option>
-              </select>
-            </div>
+          <legend><span class="legend-no">三</span><span><small>任意</small>今、知りたいこと</span></legend>
+          <div class="interest-grid">
+            <label><input type="radio" name="interest" value="self" checked><span>自分の本質</span></label>
+            <label><input type="radio" name="interest" value="work"><span>仕事の活かし方</span></label>
+            <label><input type="radio" name="interest" value="relation"><span>人との関わり方</span></label>
           </div>
         </fieldset>
 
-        <p id="error-message" class="error-message" aria-live="polite"></p>
-        <button id="diagnose-button" class="primary-button" type="submit" disabled>日干と五行を診断する</button>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <button class="primary-button" type="submit"><span>簡易命式をひらく</span><b aria-hidden="true">→</b></button>
+        <p class="disclaimer">正式鑑定ではなく、節入り（暦の月が切り替わる時点）や真太陽時などを簡略化した体験版。</p>
       </form>
     </section>
 
-    <section id="result" class="card result-card" aria-labelledby="result-title" aria-live="polite" hidden>
-      <p class="eyebrow">診断結果</p>
-      <h2 id="result-title">あなたの日干</h2>
-      <p id="result-date" class="result-date"></p>
-      <div id="stem-symbol" class="stem-symbol" aria-label=""></div>
-      <p id="stem-reading" class="stem-reading"></p>
+    <section class="result-section" id="result" hidden tabindex="-1" aria-live="polite">
+      <div class="result-topline"><p>YOUR KOYOMI NOTE</p><button type="button" id="close-result">入力を直す</button></div>
+      <div class="result-hero">
+        <div>
+          <p class="result-kicker">あなたの中心にある気</p>
+          <h2><span id="result-kanji">木</span><small id="result-reading">きのえ</small></h2>
+          <p class="result-label" id="result-label">しなやかに伸びる、始まりの人</p>
+        </div>
+        <p id="result-summary"></p>
+      </div>
 
-      <section class="element-result" aria-labelledby="element-title">
-        <p class="element-kicker">日干から分かる五行</p>
-        <h3 id="element-title">あなたの五行</h3>
-        <div id="element-symbol" class="element-symbol" aria-label=""></div>
-        <p id="element-reading" class="element-reading"></p>
-        <p id="element-type" class="element-type"></p>
-        <p id="element-relation" class="element-relation"></p>
-        <p id="type-description" class="type-description"></p>
-      </section>
+      <div class="pillars-wrap">
+        <div class="result-title"><span>01</span><h3>簡易命式</h3><p>年・月・日・時を、十干十二支（10種類と12種類の暦記号）で表す。</p></div>
+        <div class="pillars" id="pillars"></div>
+        <p class="calculation-note" id="calculation-note"></p>
+      </div>
 
-      <button id="reset-button" class="secondary-button" type="button">もう一度調べる</button>
-      <p class="privacy-note">入力した生年月日は、この端末のブラウザ内だけで計算されます。外部への送信や保存は行いません。</p>
-      <p class="notice">この診断は、生年月日の暦日をもとに日干を表示する簡易版です。出生時刻や出生地、日付の区切り方を含む詳しい命式は、流派によって判定が異なる場合があります。重要な判断は占いだけで決めず、ひとつの参考として楽しんでください。</p>
+      <div class="balance-wrap">
+        <div class="result-title"><span>02</span><h3>五行バランス</h3><p>木・火・土・金・水の登場数を、簡易的に見える化する。</p></div>
+        <div class="balance-grid" id="balance-chart"></div>
+      </div>
+
+      <div class="insight-wrap">
+        <div class="result-title"><span>03</span><h3 id="insight-heading">本質のヒント</h3><p>決めつけではなく、自分を見直すための問いとして使う。</p></div>
+        <div class="insight-grid">
+          <article><p>STRENGTH</p><h4>活かしやすい力</h4><span id="strength-text"></span></article>
+          <article><p>CAUTION</p><h4>意識したいこと</h4><span id="caution-text"></span></article>
+          <article class="action-card"><p>NEXT STEP</p><h4>今日の小さな行動</h4><span id="action-text"></span></article>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button type="button" class="secondary-button" id="print-result">結果を印刷する</button>
+        <button type="button" class="primary-button compact" id="restart-reading"><span>もう一度診断する</span><b aria-hidden="true">↺</b></button>
+      </div>
+    </section>
+
+    <section class="guide-section" id="guide">
+      <div class="section-intro reveal">
+        <p class="section-no">02</p>
+        <div><p class="eyebrow">HOW TO READ</p><h2>結果は「答え」ではなく、<br>自分を見るための鏡。</h2></div>
+      </div>
+      <div class="guide-grid">
+        <article class="reveal"><span>壱</span><h3>日干を見る</h3><p>日干（生まれた日の上側の記号）は、簡易診断では自分の中心を表す印として扱う。</p></article>
+        <article class="reveal"><span>弐</span><h3>偏りを見る</h3><p>多い要素は使いやすい力、少ない要素は意識して補う視点として読む。</p></article>
+        <article class="reveal"><span>参</span><h3>現実と照らす</h3><p>当てはまる・当てはまらないを自分の経験と比べ、役立つ部分だけを持ち帰る。</p></article>
+      </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+      <div class="section-intro reveal">
+        <p class="section-no">03</p>
+        <div><p class="eyebrow">QUESTIONS</p><h2>よくある質問</h2></div>
+      </div>
+      <div class="faq-list">
+        <details class="reveal"><summary>出生時刻が分からなくても使える？<span>＋</span></summary><p>使える。年柱・月柱・日柱の3つを表示し、時柱だけ「未入力」とする。</p></details>
+        <details class="reveal"><summary>これは正式な四柱推命鑑定？<span>＋</span></summary><p>正式鑑定ではない。月の切り替えを西暦の月で近似し、出生地による時差補正なども行わない。まず仕組みに触れるための体験版。</p></details>
+        <details class="reveal"><summary>入力した誕生日は保存される？<span>＋</span></summary><p>保存されない。このページ内のJavaScript（ブラウザで動く処理）だけで計算し、外部へ送信しない。</p></details>
+      </div>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <footer>
+    <div class="footer-mark" aria-hidden="true">暦</div>
+    <div><b>暦の余白</b><p>四柱推命の入口を、静かに、やさしく。</p></div>
+    <p class="footer-note">鑑定結果は将来や性格を断定するものではない。重要な判断は現実の情報を基に行ってください。</p>
+  </footer>
+  <script src="assets/app.js"></script>
 </body>
 </html>
