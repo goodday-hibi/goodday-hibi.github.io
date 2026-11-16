@@ -75,6 +75,7 @@
     const year = Number(yearSelect.value);
     const month = Number(monthSelect.value);
     daySelect.replaceChildren(new Option("日", ""));
+    daySelect.disabled = !(year && month);
 
     if (!year || !month) {
       updateButtonState();
@@ -290,6 +291,7 @@
   daySelect.addEventListener("change", updateButtonState);
   form.addEventListener("submit", handleSubmit);
   resetButton.addEventListener("click", resetDiagnosis);
+  updateDayOptions();
 
   window.runNikkanChecks = runDeveloperChecks;
 })();
