@@ -15,7 +15,7 @@
     <section class="card intro-card" aria-labelledby="page-title">
       <p class="eyebrow">四柱推命</p>
       <h1 id="page-title">日干・五行簡易診断</h1>
-      <p class="lead">生年月日を選ぶと、あなたの中心的な性質を表す日干を確認できます。</p>
+      <p class="lead">生年月日を選ぶと、日干と五行を確認できます。</p>
 
       <form id="birthdate-form" novalidate>
         <fieldset>
@@ -55,18 +55,40 @@
       <p id="stem-reading" class="stem-reading"></p>
 
       <section class="element-result" aria-labelledby="element-title">
-        <p class="element-kicker">日干から分かる五行</p>
         <h3 id="element-title">あなたの五行</h3>
         <div id="element-symbol" class="element-symbol" aria-label=""></div>
         <p id="element-reading" class="element-reading"></p>
         <p id="element-type" class="element-type"></p>
         <p id="element-relation" class="element-relation"></p>
         <p id="type-description" class="type-description"></p>
+
+        <section class="balance-panel" aria-labelledby="balance-title">
+          <div class="balance-heading">
+            <div>
+              <h4 id="balance-title">五行バランス</h4>
+              <p>生年月日から見た、木・火・土・金・水のあらわれ方です。</p>
+            </div>
+          </div>
+          <div id="balance-chart" class="balance-chart"></div>
+          <p class="balance-note">※このグラフは、五行の強さや良し悪しを表すものではありません。</p>
+        </section>
+
+        <ul id="boundary-note" class="boundary-note" aria-live="polite" hidden></ul>
+
+        <details class="diagnosis-details">
+          <summary>簡易診断について</summary>
+          <div class="diagnosis-details-body">
+            <p>生年月日から求めた干支6文字（年柱2文字・月柱2文字・日柱2文字）を、五行別に数えています。</p>
+            <p>四柱推命では、月柱は毎月1日ではなく、二十四節気の「節入り」で切り替わります。この簡易版では、西暦の月が変わる1日を月柱の切り替わりとして計算しています。</p>
+            <p>この簡易版では、出生時刻は計算に含んでいません。</p>
+            <p>四柱推命で年の切り替わりに用いるのは、「立春」です。この簡易版では立春を2月4日頃とし、1月1日から2月3日頃までは前年として計算します。実際の立春日時は年によって異なります。</p>
+          </div>
+        </details>
       </section>
 
       <button id="reset-button" class="secondary-button" type="button">もう一度調べる</button>
       <p class="privacy-note">入力した生年月日は、この端末のブラウザ内だけで計算されます。外部への送信や保存は行いません。</p>
-      <p class="notice">この診断は、生年月日の暦日をもとに日干を表示する簡易版です。出生時刻や出生地、日付の区切り方を含む詳しい命式は、流派によって判定が異なる場合があります。重要な判断は占いだけで決めず、ひとつの参考として楽しんでください。</p>
+      <p class="guidance-note">結果はひとつの参考として、日々を見つめるヒントにしてください。</p>
     </section>
   </main>
 

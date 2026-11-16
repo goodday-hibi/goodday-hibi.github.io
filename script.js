@@ -1,9 +1,10 @@
 (() => {
   "use strict";
 
-  const MIN_YEAR = 1960;
-  const MAX_YEAR = 2040;
+  const MIN_YEAR = 1940;
+  const MAX_YEAR = 2027;
   const STEMS = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+  const BRANCH_ELEMENTS = ["水", "土", "木", "木", "土", "火", "火", "土", "金", "金", "土", "水"];
   const STEM_DATA = {
     甲: { reading: "きのえ", element: "木", description: "大きな木のように、目標へまっすぐ伸びていく力を持つタイプ。" },
     乙: { reading: "きのと", element: "木", description: "草花のように、周囲と調和しながら粘り強く成長するタイプ。" },
@@ -27,6 +28,27 @@
   const errorMessage = document.querySelector("#error-message");
   const resultSection = document.querySelector("#result");
   const resetButton = document.querySelector("#reset-button");
+  const balanceChart = document.querySelector("#balance-chart");
+  const boundaryNote = document.querySelector("#boundary-note");
+
+  const APPROXIMATE_SETSUIRI_END_DAY = {
+    1: 6,
+    2: 5,
+    3: 7,
+    4: 6,
+    5: 7,
+    6: 7,
+    7: 8,
+    8: 8,
+    9: 8,
+    10: 9,
+    11: 8,
+    12: 8
+  };
+
+  function mod(value, divisor) {
+    return ((value % divisor) + divisor) % divisor;
+  }
 
   function appendOptions(selectElement, start, end, suffix) {
     const fragment = document.createDocumentFragment();
@@ -84,9 +106,91 @@
 
   function getStemResult(year, month, day) {
     const jdn = gregorianToJdn(year, month, day);
-    const sexagenaryIndex = ((jdn + 49) % 60 + 60) % 60;
+    const sexagenaryIndex = mod(jdn + 49, 60);
     const stem = STEMS[sexagenaryIndex % 10];
     return { stem, ...STEM_DATA[stem] };
+  }
+
+  function getElementBalance(year, month, day) {
+    const counts = { 木: 0, 火: 0, 土: 0, 金: 0, 水: 0 };
+    const beforeApproxLiChun = month === 1 || (month === 2 && day < 4);
+    const adjustedYear = beforeApproxLiChun ? year - 1 : year;
+    const yearIndex = adjustedYear - 4;
+    const monthOffset = mod(month - 2, 12);
+    const yearStemIndex = mod(yearIndex, 10);
+    const monthStemIndex = mod((yearStemIndex % 5) * 2 + 2 + monthOffset, 10);
+    const monthBranchIndex = mod(2 + monthOffset, 12);
+    const dayIndex = mod(gregorianToJdn(year, month, day) + 49, 60);
+
+    const pillarIndexes = [
+      [mod(yearIndex, 10), mod(yearIndex, 12)],
+      [monthStemIndex, monthBranchIndex],
+      [mod(dayIndex, 10), mod(dayIndex, 12)]
+    ];
+
+    pillarIndexes.forEach(([stemIndex, branchIndex]) => {
+      counts[STEM_DATA[STEMS[stemIndex]].element] += 1;
+      counts[BRANCH_ELEMENTS[branchIndex]] += 1;
+    });
+
+    return { counts, beforeApproxLiChun };
+  }
+
+  function renderElementBalance(balance) {
+    const entries = Object.entries(balance.counts);
+    const max = Math.max(...entries.map(([, value]) => value), 1);
+    const fragment = document.createDocumentFragment();
+
+    entries.forEach(([element, value]) => {
+      const row = document.createElement("div");
+      row.className = "balance-row";
+      row.setAttribute("aria-label", `${element}は${value}`);
+
+      const label = document.createElement("span");
+      label.className = "balance-label";
+      label.textContent = element;
+
+      const track = document.createElement("span");
+      track.className = "balance-track";
+      track.setAttribute("aria-hidden", "true");
+      const fill = document.createElement("i");
+      fill.className = "balance-fill";
+      fill.style.setProperty("--balance-width", `${value ? Math.max((value / max) * 100, 12) : 0}%`);
+      track.append(fill);
+
+      const number = document.createElement("b");
+      number.className = "balance-value";
+      number.textContent = String(value);
+
+      row.append(label, track, number);
+      fragment.append(row);
+    });
+
+    balanceChart.replaceChildren(fragment);
+  }
+
+  function getBoundaryMessages(month, day) {
+    const endDay = APPROXIMATE_SETSUIRI_END_DAY[month];
+    if (!endDay || day > endDay) return [];
+    const messages = [
+      "節入りに近い生年月日の場合、正式鑑定とは月柱が異なることがあります。"
+    ];
+    if (month === 2) {
+      messages.push("立春付近では、年柱も変わる可能性があります。");
+    }
+    messages.push("この簡易版で変わるのは、五行バランスの数だけです。");
+    return messages;
+  }
+
+  function renderBoundaryNote(month, day) {
+    const messages = getBoundaryMessages(month, day);
+    const items = messages.map((text) => {
+      const item = document.createElement("li");
+      item.textContent = `※${text}`;
+      return item;
+    });
+    boundaryNote.replaceChildren(...items);
+    boundaryNote.hidden = messages.length === 0;
   }
 
   function isValidDate(year, month, day) {
@@ -113,6 +217,8 @@
     document.querySelector("#element-type").textContent = `五行タイプ：${result.element}`;
     document.querySelector("#element-relation").textContent = `日干「${result.stem}」は、五行では「${result.element}」に分類されます。`;
     document.querySelector("#type-description").textContent = result.description;
+    renderElementBalance(getElementBalance(year, month, day));
+    renderBoundaryNote(month, day);
     resultSection.className = `card result-card ${ELEMENT_CLASSES[result.element]}`;
     resultSection.hidden = false;
     resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -129,7 +235,7 @@
     const month = Number(monthSelect.value);
     const day = Number(daySelect.value);
     if (year < MIN_YEAR || year > MAX_YEAR) {
-      showError("1960年1月1日から2040年12月31日までの日付を選んでください");
+      showError("1940年1月1日から2027年12月31日までの日付を選んでください");
       return;
     }
     if (!isValidDate(year, month, day)) {
@@ -145,6 +251,8 @@
     form.reset();
     daySelect.replaceChildren(new Option("日", ""));
     resultSection.hidden = true;
+    boundaryNote.replaceChildren();
+    boundaryNote.hidden = true;
     showError("");
     updateButtonState();
     yearSelect.focus();
@@ -152,6 +260,7 @@
   }
 
   function runDeveloperChecks() {
+    const sampleBalance = getElementBalance(1970, 1, 1);
     const checks = [
       ["1970-01-01", getStemResult(1970, 1, 1).stem === "辛" && getStemResult(1970, 1, 1).element === "金"],
       ["1970-01-02", getStemResult(1970, 1, 2).stem === "壬" && getStemResult(1970, 1, 2).element === "水"],
@@ -159,9 +268,16 @@
       ["1999-12-31", getStemResult(1999, 12, 31).stem === "丁" && getStemResult(1999, 12, 31).element === "火"],
       ["1972年2月は29日", getDaysInMonth(1972, 2) === 29],
       ["1971年2月は28日", getDaysInMonth(1971, 2) === 28],
-      ["2040-12-31は範囲内", isValidDate(2040, 12, 31)],
-      ["2040-12-31の翌日は範囲外", !isValidDate(2041, 1, 1)],
-      ["未選択時は診断不可", diagnoseButton.disabled]
+      ["1940-01-01は範囲内", isValidDate(1940, 1, 1)],
+      ["1939-12-31は範囲外", !isValidDate(1939, 12, 31)],
+      ["2027-12-31は範囲内", isValidDate(2027, 12, 31)],
+      ["2028-01-01は範囲外", !isValidDate(2028, 1, 1)],
+      ["未選択時は診断不可", diagnoseButton.disabled],
+      ["五行バランスは6文字を集計", Object.values(sampleBalance.counts).reduce((sum, value) => sum + value, 0) === 6],
+      ["日干の五行がバランスに含まれる", sampleBalance.counts[getStemResult(1970, 1, 1).element] >= 1],
+      ["2月上旬は3項目を案内", getBoundaryMessages(2, 4).length === 3],
+      ["3月上旬は2項目を案内", getBoundaryMessages(3, 4).length === 2],
+      ["節入り付近以外は案内なし", getBoundaryMessages(3, 10).length === 0]
     ];
     return checks.map(([name, passed]) => ({ name, passed }));
   }

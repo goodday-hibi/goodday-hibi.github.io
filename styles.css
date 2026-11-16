@@ -1,14 +1,14 @@
 :root {
   color-scheme: light;
-  --ink: #0d1713;
-  --muted: #2f3c36;
-  --paper: #fffdfa;
-  --line: #d7dfda;
-  --accent: #40307f;
-  --accent-dark: #2c205f;
-  --button-bg: #4b3168;
-  --button-hover: #342047;
-  --focus: #a44f20;
+  --ink: #18352a;
+  --muted: #526259;
+  --paper: #fbf8ee;
+  --line: #cfc8af;
+  --accent: #566f47;
+  --accent-dark: #38533f;
+  --button-bg: #3f684f;
+  --button-hover: #2e503c;
+  --focus: #9a7537;
   --error: #a02f2f;
   --wood: #397548;
   --fire: #b23a3a;
@@ -27,8 +27,8 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  background-color: #211a35;
-  background-image: linear-gradient(rgb(22 16 38 / 18%), rgb(22 16 38 / 30%)), url("sindanhaikei.png");
+  background-color: #173727;
+  background-image: linear-gradient(rgb(9 31 22 / 14%), rgb(8 26 19 / 24%)), url("sindanhaikei-yuen-green-web.jpg");
   background-repeat: no-repeat, no-repeat;
   background-position: center, center top;
   background-size: cover, cover;
@@ -48,10 +48,10 @@ button, select { font: inherit; }
 .card {
   overflow: hidden;
   padding: clamp(24px, 6vw, 48px);
-  border: 1px solid rgb(55 106 85 / 18%);
+  border: 1px solid rgb(197 177 126 / 34%);
   border-radius: 24px;
-  background: rgb(255 250 242 / 68%);
-  box-shadow: 0 18px 50px rgb(12 8 24 / 30%);
+  background: rgb(251 248 238 / 78%);
+  box-shadow: 0 18px 50px rgb(6 24 17 / 32%);
   backdrop-filter: blur(1px);
 }
 
@@ -113,7 +113,7 @@ button {
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .error-message { min-height: 1.7em; margin: 10px 0 0; color: var(--error); font-weight: 700; }
-.result-card { position: relative; text-align: center; }
+.result-card { position: relative; color: var(--ink); text-align: center; }
 .result-card::before {
   position: absolute;
   inset: 0 0 auto;
@@ -127,16 +127,9 @@ button {
 .element-result {
   margin-top: 28px;
   padding: clamp(22px, 5vw, 34px);
-  border: 1px solid #d8d0e7;
+  border: 1px solid #c9bf9e;
   border-radius: 18px;
-  background: #f8f5fc;
-}
-.element-kicker {
-  margin: 0 0 4px;
-  color: var(--muted);
-  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
-  font-size: .82rem;
-  font-weight: 700;
+  background: rgb(249 247 237 / 90%);
 }
 .element-symbol {
   margin-top: 10px;
@@ -149,8 +142,80 @@ button {
 .element-type { margin: 0; font-size: 1.15rem; font-weight: 700; }
 .element-relation { margin: 8px 0 0; font-size: .92rem; }
 .type-description { max-width: 34em; margin: 12px auto 0; }
+.balance-panel {
+  margin-top: 30px;
+  padding: clamp(22px, 5vw, 34px);
+  border: 1px solid rgb(215 188 132 / 34%);
+  border-radius: 16px;
+  color: #fbf7ea;
+  background: linear-gradient(145deg, rgb(50 84 61 / 96%), rgb(35 67 49 / 96%));
+  text-align: left;
+}
+.balance-heading {
+  display: block;
+}
+.balance-heading h4 { margin: 0; font-size: clamp(1.35rem, 5vw, 1.7rem); font-weight: 400; }
+.balance-heading p { margin: 8px 0 0; color: rgb(247 242 226 / 72%); font-size: .82rem; }
+.balance-chart { display: grid; gap: 18px; margin-top: 28px; }
+.balance-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 24px;
+  align-items: center;
+  gap: 14px;
+}
+.balance-label { font-size: 1.15rem; }
+.balance-track { height: 10px; overflow: hidden; background: rgb(255 255 255 / 10%); }
+.balance-fill {
+  display: block;
+  width: var(--balance-width, 0%);
+  height: 100%;
+  background: #ddbd78;
+  transition: width .65s ease;
+}
+.balance-value { color: rgb(251 247 234 / 78%); font-family: Arial, sans-serif; font-size: .9rem; font-weight: 400; text-align: right; }
+.balance-note { margin: 24px 0 0; padding: 16px 0 0; border-top: 1px solid rgb(255 255 255 / 13%); color: rgb(247 242 226 / 72%); font-size: .76rem; line-height: 1.7; }
+.boundary-note {
+  margin: 14px 0 0;
+  padding: 11px 14px;
+  border: 1px solid #d7c28e;
+  border-radius: 10px;
+  color: #594b32;
+  background: #f4ead1;
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  font-size: .78rem;
+  line-height: 1.7;
+  list-style: none;
+  text-align: left;
+}
+.boundary-note li + li { margin-top: 4px; }
+.diagnosis-details {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgb(255 253 248 / 68%);
+  color: var(--muted);
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  text-align: left;
+}
+.diagnosis-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 700;
+  list-style: none;
+}
+.diagnosis-details summary::-webkit-details-marker { display: none; }
+.diagnosis-details summary::after { content: "＋"; color: var(--accent); font-size: 1rem; font-weight: 400; }
+.diagnosis-details[open] summary::after { content: "−"; }
+.diagnosis-details-body { padding: 14px 16px 16px; border-top: 1px solid var(--line); }
+.diagnosis-details-body p { margin: 0; font-size: .76rem; line-height: 1.75; }
+.diagnosis-details-body p + p { margin-top: 10px; }
 .privacy-note { margin: 20px 0 0; color: var(--muted); font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; font-size: .82rem; }
-.notice { margin: 28px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; font-size: .78rem; text-align: left; }
+.guidance-note { margin: 14px 0 0; color: var(--muted); font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif; font-size: .78rem; line-height: 1.7; }
 
 .element-wood { --element-color: var(--wood); }
 .element-fire { --element-color: var(--fire); }
@@ -164,6 +229,8 @@ button {
   .page-shell { width: min(100% - 16px, 680px); padding-block: 16px; }
   .card { padding: 20px 14px; border-radius: 18px; }
   select { min-height: 50px; padding-right: 20px; padding-left: 7px; font-size: .92rem; }
+  .balance-panel { padding: 20px 16px; }
+  .balance-row { grid-template-columns: 26px 1fr 20px; gap: 10px; }
 }
 
 @media (max-width: 600px) {
