@@ -250,6 +250,7 @@
   function resetDiagnosis() {
     form.reset();
     daySelect.replaceChildren(new Option("日", ""));
+    daySelect.disabled = true;
     resultSection.hidden = true;
     boundaryNote.replaceChildren();
     boundaryNote.hidden = true;
