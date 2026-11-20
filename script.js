@@ -250,6 +250,7 @@
 
   function resetDiagnosis() {
     form.reset();
+    resetButton.blur();
     daySelect.replaceChildren(new Option("日", ""));
     daySelect.disabled = true;
     resultSection.hidden = true;
@@ -257,7 +258,6 @@
     boundaryNote.hidden = true;
     showError("");
     updateButtonState();
-    yearSelect.focus();
     form.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
