@@ -8,14 +8,16 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
   <title>日干・五行簡易診断</title>
-  <link rel="stylesheet" href="styles.css?v=20261116-1">
+  <link rel="stylesheet" href="styles.css?v=20261121-1">
 </head>
 <body>
   <main class="page-shell">
     <section class="card intro-card" aria-labelledby="page-title">
-      <p class="eyebrow">四柱推命</p>
-      <h1 id="page-title">日干・五行簡易診断</h1>
-      <p class="lead">生年月日を選ぶと、日干と五行を確認できます。</p>
+      <p class="brand-name">ゆえん🍀｜陰陽五行と養生の知恵</p>
+      <h1 id="page-title">四柱推命の日干から<br class="title-break-mobile">わかる、<br class="title-break-desktop">五行の簡易診断</h1>
+      <p class="lead">
+        <span class="lead-line">あなたの五行</span><span class="lead-line">（木・火・土・金・水）を調べてみよう</span>
+      </p>
 
       <form id="birthdate-form" novalidate>
         <fieldset>
@@ -43,7 +45,7 @@
         </fieldset>
 
         <p id="error-message" class="error-message" aria-live="polite"></p>
-        <button id="diagnose-button" class="primary-button" type="submit" disabled>日干と五行を診断する</button>
+        <button id="diagnose-button" class="primary-button" type="submit" disabled>簡易診断する</button>
       </form>
     </section>
 

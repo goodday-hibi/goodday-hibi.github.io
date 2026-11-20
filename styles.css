@@ -57,6 +57,17 @@ button, select { font: inherit; }
 
 .card + .card { margin-top: 24px; }
 
+.brand-name {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  font-size: clamp(.78rem, 2vw, .9rem);
+  font-weight: 700;
+  letter-spacing: .05em;
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   color: var(--accent);
@@ -70,7 +81,15 @@ h1, h2, h3 { margin: 0; line-height: 1.35; }
 h1 { font-size: clamp(1.7rem, 7vw, 2.6rem); }
 h2 { font-size: clamp(1.45rem, 6vw, 2rem); }
 h3 { font-size: clamp(1.35rem, 5vw, 1.75rem); }
-.lead { margin: 16px 0 30px; color: var(--muted); }
+.intro-card h1 {
+  font-size: clamp(1.65rem, 4.4vw, 2.35rem);
+  line-height: 1.45;
+  letter-spacing: .01em;
+  text-wrap: balance;
+}
+.title-break-mobile { display: none; }
+.lead-line { display: inline; }
+.lead { margin: 16px 0 30px; color: var(--muted); font-weight: 700; }
 
 fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 legend { margin-bottom: 12px; font-weight: 700; }
@@ -228,9 +247,17 @@ button {
 @media (max-width: 360px) {
   .page-shell { width: min(100% - 16px, 680px); padding-block: 16px; }
   .card { padding: 20px 14px; border-radius: 18px; }
+  .brand-name { font-size: .74rem; letter-spacing: .03em; }
   select { min-height: 50px; padding-right: 20px; padding-left: 7px; font-size: .92rem; }
   .balance-panel { padding: 20px 16px; }
   .balance-row { grid-template-columns: 26px 1fr 20px; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .intro-card h1 { letter-spacing: 0; }
+  .title-break-mobile { display: inline; }
+  .title-break-desktop { display: none; }
+  .lead-line { display: block; }
 }
 
 @media (max-width: 600px) {
